@@ -8,26 +8,7 @@ import { Subject } from 'rxjs/Subject';
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
 
-  private recipes: Recipe[] = [
-    new Recipe('Pizza',
-      'It\'s just pizza',
-      'https://static.pexels.com/photos/2232/vegetables-italian-pizza-restaurant.jpg',
-      [
-        new Ingredient('Cheese', 10),
-        new Ingredient('Dough', 2),
-        new Ingredient('Sausage', 14)
-      ]
-    ),
-    new Recipe('Hamburger',
-      'I like hamburger',
-      'https://az616578.vo.msecnd.net/files/2016/03/12/6359341695309050372083788656_fast%20food.jpg',
-      [
-        new Ingredient('Bun', 2),
-        new Ingredient('Cheese', 1),
-        new Ingredient('Meat', 1)
-      ]
-    )
-  ];
+  private recipes: Recipe[] = [];
 
   constructor(private slService: ShoppingListService){}
 
@@ -55,6 +36,11 @@ export class RecipeService {
 
   deleteRecipe(index: number) {
     this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  setRecipes(recipes: Recipe[]){
+    this.recipes = recipes;
     this.recipesChanged.next(this.recipes.slice());
   }
 }
